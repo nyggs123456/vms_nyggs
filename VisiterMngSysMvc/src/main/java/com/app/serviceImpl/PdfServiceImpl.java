@@ -112,6 +112,11 @@ public class PdfServiceImpl implements PdfService {
 				contentStream.newLineAtOffset(0, -40);
 				contentStream.showText("Meeting Host   :  " + meetingDto.getUser().getFirstName() + " "
 						+ meetingDto.getUser().getLastName());
+				
+				contentStream.newLineAtOffset(0, -40);
+				contentStream.showText("Department     :  " + meetingDto.getUser().getDepartmentDto().getName() 
+						);
+
 
 				contentStream.newLineAtOffset(0, -40);
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
