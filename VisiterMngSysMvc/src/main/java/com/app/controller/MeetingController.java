@@ -36,6 +36,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.app.Dao.ConfigurationDao;
 import com.app.Dao.MeetingDao;
+import com.app.Dao.RoomDao;
 import com.app.Dao.UserDao;
 import com.app.authorize.Authorization;
 import com.app.dto.CustomResponseDTO;
@@ -45,6 +46,7 @@ import com.app.dto.UpdateMeetingDto;
 import com.app.dto.VisitorMeetingDto;
 import com.app.emun.MeetingStatus;
 import com.app.entity.Meeting;
+import com.app.entity.User;
 import com.app.response.Response;
 import com.app.security.JwtHelper;
 import com.app.service.FileService;
@@ -71,6 +73,9 @@ public class MeetingController {
 
 	@Autowired
 	private PdfService pdfService;
+	
+	@Autowired
+	private RoomDao roomDao;
 
 	@Autowired
 	private MeetingDao meetingDao;
@@ -147,44 +152,24 @@ public class MeetingController {
 	public ResponseEntity<?> getMeetingsByPagination(@RequestBody PaginationRequest PaginationRequest,
 			HttpServletRequest request) throws Exception {
 
-//		String header = request.getHeader("Authorization");
-//		if (header == null) {
-//			return new ResponseEntity<>((new Response<>("Unauthorize", null, HttpStatus.BAD_REQUEST.value())),
-//					HttpStatus.BAD_REQUEST);
-//		}
-//		User authorize = authorization.authorizegetallUserdetalis(header.substring(7));
-//		
-//		if (authorize != null) {
-//			
-//			Response<?> user = userService.getUserByid(PaginationRequest.getUser().getId());
-//
-//			UserDto data = (UserDto) user.getData();
-//			
-//			if (data.getRole().getName().equals("RECEPTIONIST")) {
-//				
-//				Response<?> meetingsByPagination = meetingService.getMeetingsByPagination(PaginationRequest);
-//
-//				return ResponseEntity.ok(meetingsByPagination);
-//				
-//			}else if(data.getRole().getName().equals("ADMIN")) {
-//				
-//				PaginationRequest.setNoUser(PaginationRequest.getUser().getId());
-//				
-//				Response<?> meetingsByPagination = meetingService.getMeetingsByPagination(PaginationRequest);
-//
-//				return ResponseEntity.ok(meetingsByPagination);
-//				
-//				
-//				
-//			}
-//
-//			
-//
-//		} else {
-//			return new ResponseEntity<>((new Response<>("Unauthorize", null, HttpStatus.BAD_REQUEST.value())),
-//					HttpStatus.BAD_REQUEST);
-//
-//		}
+
+	
+	String header = request.getHeader("Authorization");
+	if (header != null) {
+		User checkRole = authorization.checkRole(header.substring(7));
+		if (checkRole != null) {
+
+			PaginationRequest.setCompanyId(checkRole.getCompany().getId());
+			
+			Response<?> meetingsByPagination = meetingService.getMeetingsByPagination(PaginationRequest);
+			if (meetingsByPagination.getStatus() == HttpStatus.OK.value()) {
+				
+				return ResponseEntity.ok(meetingsByPagination);
+			}
+
+			return new ResponseEntity<>(meetingsByPagination, HttpStatus.NO_CONTENT);
+		}
+	}
 
 		Response<?> meetingsByPagination = meetingService.getMeetingsByPagination(PaginationRequest);
 
@@ -475,24 +460,24 @@ public class MeetingController {
 
 	}
 
-//	@GetMapping("/demo")
-//	public ResponseEntity<?> getmeetingdetails() {
-//
-//		try {
-//			meetingService.automaticallyCancelledMeeting(30);
-//
-//			return ResponseEntity.ok("Meeting cancellation process initiated successfully");
-//
-//		} catch (Exception e) {
-//
-//			e.printStackTrace();
-//
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//
-//					.body("An error occurred while processing the meeting cancellation");
-//		}
-//
-//	}
+	@GetMapping("/demo")
+	public ResponseEntity<?> getmeetingdetails() {
+
+		try {
+			meetingService.automaticallyCancelledMeeting(30);
+
+			return ResponseEntity.ok("Meeting cancellation process initiated successfully");
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+
+					.body("An error occurred while processing the meeting cancellation");
+		}
+
+	}
 
 	@GetMapping("/deleteExcel")
 	public ResponseEntity<?> deleteOldFile() {

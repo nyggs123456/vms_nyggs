@@ -58,6 +58,10 @@ public class RoomDaoImpl implements RoomDao {
 		return criteria.list();
 	}
 
+	
+	
+	
+	
 	@Override
 	public List<Room> getAllactive(Integer companyId) {
 
@@ -65,7 +69,7 @@ public class RoomDaoImpl implements RoomDao {
 
 		// Add criteria to filter rooms based on the companyId
 		criteria.add(Restrictions.eq("isActive", true));
-		// criteria.add(Restrictions.eq("isAvailable" , true));
+	//	criteria.add(Restrictions.eq("isAvailable" , true));
 
 		// Create an alias for the "company" property to be able to reference it in the
 		// criteria
@@ -85,6 +89,43 @@ public class RoomDaoImpl implements RoomDao {
 	    
 	    criteria.createAlias("company", "c");
 	    criteria.createAlias("c.building", "b");
+	    criteria.add(Restrictions.eq("isActive", true));
+	//	criteria.add(Restrictions.eq("isAvailable" , true));
+	    
+
+	    if(buildingId ==null && companyId !=null) {
+
+			criteria.add(Restrictions.eq("c.id", companyId));
+
+			return criteria.list();
+	    }
+	    
+	    if(buildingId != null &&  companyId == null) {
+	    	conjunction.add(Restrictions.eq("b.buildingId", buildingId)); 
+	    }
+
+	    if(buildingId != null && companyId != null) {
+	    	 conjunction.add(Restrictions.eq("c.id", companyId));
+	         conjunction.add(Restrictions.eq("b.buildingId", buildingId)); 
+	    }
+	    
+	    criteria.add(conjunction);
+	    
+
+	    return criteria.list();
+	}
+	
+	
+	@Override
+	public List<Room> getAllRoomFilter(Integer companyId, Integer buildingId) {
+
+	    Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Room.class);
+	    Conjunction conjunction = Restrictions.conjunction();
+	    
+	    criteria.createAlias("company", "c");
+	    criteria.createAlias("c.building", "b");
+//	    criteria.add(Restrictions.eq("isActive", true));
+//		criteria.add(Restrictions.eq("isAvailable" , true));
 	    
 
 	    if(buildingId ==null && companyId !=null) {
