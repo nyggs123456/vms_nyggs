@@ -53,7 +53,7 @@ public class ScheduledTaskConfig {
 
 	@Scheduled(cron = "0 30 16 * * *", zone = "UTC")
 	public void absentAllUser() {
-		System.out.println("User  absent all ");
+		System.out.println("User Present absent ");
 		userDao.absentAll();
 	}
 	
@@ -61,7 +61,7 @@ public class ScheduledTaskConfig {
 	
 	@Scheduled(cron = "0 30 2 * * *", zone = "UTC")
 	public void presentAlluser() {
-		System.out.println("User Present All ");
+		System.out.println("User Present absent ");
 		userDao.presentAll();
 	}
 

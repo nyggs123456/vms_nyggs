@@ -35,5 +35,7 @@ public interface RoomDao {
 
 	public List<Room> getAllactive2(Integer companyId, Integer buildingId);
 
+	public List<Room> getAllRoomFilter(Integer companyId, Integer buildingId);
+
 	
 }

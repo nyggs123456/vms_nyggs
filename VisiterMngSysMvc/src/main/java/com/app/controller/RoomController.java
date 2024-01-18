@@ -31,10 +31,11 @@ public class RoomController {
 
 	@Autowired
 	private RoomService roomService;
-
-	@Autowired
-	private Authorization authorization;
 	
+	
+	@Autowired
+	private  Authorization  authorization;
+
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 //	@PostMapping("/save")
@@ -105,16 +106,18 @@ public class RoomController {
 		return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
 	}
 
-	@GetMapping("/allbuilding")
-	public ResponseEntity<?> getAll(@RequestParam(required = false) Integer id,
-			@RequestParam(required = false) Integer buildingId, HttpServletRequest request) {
-
+	@GetMapping("/allrooms")
+	public ResponseEntity<?> getAllRoomFilter(@RequestParam(required = false) Integer id,
+			@RequestParam(required = false) Integer buildingId ,
+			HttpServletRequest request
+			) {
+		
 		String header = request.getHeader("Authorization");
 		if (header != null) {
 			User checkRole = authorization.checkRole(header.substring(7));
 			if (checkRole != null) {
 
-				Response<?> room = roomService.getAll2(checkRole.getCompany().getId(), buildingId);
+				Response<?> room = roomService.getAllRoomFilter(checkRole.getCompany().getId(), buildingId);
 				if (room.getStatus() == HttpStatus.OK.value()) {
 					return ResponseEntity.ok(room);
 				}
@@ -122,7 +125,38 @@ public class RoomController {
 				return new ResponseEntity<>(room, HttpStatus.NO_CONTENT);
 			}
 		}
+	
+	// You can set the default time zone to UTC for the entire application
+	TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
+	Response<?> response = this.roomService.getAllRoomFilter(id, buildingId);
+
+	return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+
+
+}
+		
+		@GetMapping("/allbuilding")
+		public ResponseEntity<?> getAll(@RequestParam(required = false) Integer id,
+				@RequestParam(required = false) Integer buildingId ,
+				HttpServletRequest request) {
+
+			
+			
+			String header = request.getHeader("Authorization");
+			if (header != null) {
+				User checkRole = authorization.checkRole(header.substring(7));
+				if (checkRole != null) {
+
+					Response<?> room = roomService.getAll2(checkRole.getCompany().getId(), buildingId);
+					if (room.getStatus() == HttpStatus.OK.value()) {
+						return ResponseEntity.ok(room);
+					}
+
+					return new ResponseEntity<>(room, HttpStatus.NO_CONTENT);
+				}
+			}
+		
 		// You can set the default time zone to UTC for the entire application
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
@@ -157,6 +191,23 @@ public class RoomController {
 
 	}
 
+//	@PostMapping("/isActive")
+//	public ResponseEntity<?> isActiveRoom(@RequestBody IsActiveDto activeDto) {
+//
+//		boolean activate = activeDto.getIsActive();
+//		String status = null;
+//		if (activate == true) {
+//			status = "Activated";
+//		} else {
+//			status = "Deactivated";
+//		}
+//
+//		Response<?> response = roomService.delete(activeDto);
+//
+//		return new ResponseEntity<>(new CustomResponseDTO("Room " + status, HttpStatus.OK.value()),
+//				HttpStatus.valueOf(response.getStatus()));
+//	}
+	
 	@PostMapping("/isActive")
 	public ResponseEntity<?> isActiveRoom(@RequestBody IsActiveDto activeDto) {
 

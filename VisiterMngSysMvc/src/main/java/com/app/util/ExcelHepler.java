@@ -65,8 +65,8 @@ public class ExcelHepler {
 
 			headerRow.createCell(4).setCellValue("Employee Department");
 			headerRow.createCell(5).setCellValue("Visitor Company ");
-			headerRow.createCell(6).setCellValue("Visitor Email");
-			headerRow.createCell(7).setCellValue("Visitor Phone");
+			headerRow.createCell(6).setCellValue("Email");
+			headerRow.createCell(7).setCellValue("Phone");
 			headerRow.createCell(8).setCellValue("Room Name");
 
 			headerRow.createCell(9).setCellValue("Context");
@@ -182,7 +182,7 @@ public class ExcelHepler {
 			if (dateString != null) {
 
 //	            	System.out.println(anew D);
-//	                long milliseconds = dateString + (5L * 60L * 60L * 1000L) + (30L * 60L * 1000L);
+//	                long milliseconds = dateString + (5L  60L  60L  1000L) + (30L  60L * 1000L);
 				Date resultDate = new Date(dateString);
 
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy , hh:mm a");

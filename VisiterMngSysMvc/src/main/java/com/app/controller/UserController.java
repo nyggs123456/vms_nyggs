@@ -2,6 +2,7 @@ package com.app.controller;
 
 import java.io.File;
 
+
 import java.io.IOException;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import com.app.authorize.Authorization;
 import com.app.dto.ChangePasswordDto;
 import com.app.dto.IsActiveDto;
 import com.app.dto.UserDto;
+import com.app.dto.UserFilterDto;
 import com.app.entity.User;
 import com.app.response.Response;
 import com.app.service.UserService;
@@ -44,17 +46,23 @@ public class UserController {
 
 	@Autowired
 	private VallidationClass vallidationClass;
-
+	
+	
 	@Autowired
 	private UserService userService;
+	
 
 	@Autowired
 	private Authorization authorization;
-
+	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	
 
 	@Value("${project.excel}")
 	private String excelDir;
+	
+	
 
 //	@PostMapping("/adduser1")
 //	public ResponseEntity<?> addUser1(@RequestBody @Valid UserDto userDto,HttpServletRequest request, HttpServletResponse response) {
@@ -112,7 +120,7 @@ public class UserController {
 
 		if (authorizetoAdduser.getStatus() == HttpStatus.OK.value()) {
 			if (userDto.getId() == null) {
-				Response<?> checkUser = vallidationClass.checkUser(userDto, authorizetoAdduser);
+				Response<?> checkUser = vallidationClass.checkUser(userDto,authorizetoAdduser);
 				if (checkUser.getStatus() == HttpStatus.OK.value()) {
 					Response<?> saveUser = userService.saveUser(userDto);
 
@@ -126,7 +134,7 @@ public class UserController {
 				}
 			} else {
 				Response<?> authorizeto = authorization.authorizetoAdduser(header.substring(7), userDto);
-
+				
 				if (authorizetoAdduser.getStatus() == HttpStatus.OK.value()) {
 					Response<?> saveUser = userService.saveUser(userDto);
 					return new ResponseEntity<>(saveUser, HttpStatus.valueOf(saveUser.getStatus()));
@@ -240,20 +248,21 @@ public class UserController {
 	@GetMapping("/getbyid/{id}")
 	public ResponseEntity<?> getUserByid(@PathVariable Integer id) throws Exception {
 		Response<?> user = userService.getUserByid(id);
-		if (user.getStatus() == HttpStatus.OK.value()) {
-			return new ResponseEntity<>(new Response<>("Success", user, HttpStatus.OK.value()), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(new Response<>("User Not Found ", null, HttpStatus.BAD_REQUEST.value()),
-					HttpStatus.BAD_REQUEST);
+		if(user.getStatus()==HttpStatus.OK.value())
+		{
+		return new ResponseEntity<>(new Response<>("Success", user, HttpStatus.OK.value()), HttpStatus.OK);
+		}else
+		{
+			return new ResponseEntity<>(new Response<>("User Not Found ", null, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@GetMapping("/alluser")
 	public ResponseEntity<?> getUserforVister(@RequestParam Integer companyId) {
-
-		if (companyId == null) {
-			return new ResponseEntity<>(new Response<>("Provide Company Id", null, HttpStatus.BAD_REQUEST.value()),
-					HttpStatus.BAD_REQUEST);
+		
+		if(companyId==null)
+		{
+			return new ResponseEntity<>(new Response<>("Provide Company Id",null,HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
 		}
 		Response<?> users = userService.getUsers(companyId);
 		if (users.getStatus() == HttpStatus.OK.value()) {
@@ -262,7 +271,20 @@ public class UserController {
 
 		return new ResponseEntity<>(users, HttpStatus.NO_CONTENT);
 	}
-
+	
+//	@GetMapping("/alluserbuildingId")
+//	public ResponseEntity<?> getUserforVister2(@RequestParam(required = false) Integer companyId  ,@RequestParam Integer buildingId) {
+//		
+//	
+//		Response<?> users = userService.getUsers2(companyId ,buildingId);
+//		if (users.getStatus() == HttpStatus.OK.value()) {
+//			return ResponseEntity.ok(users);
+//		}
+//
+//		return new ResponseEntity<>(users, HttpStatus.NO_CONTENT);
+//	}
+	
+	
 	@GetMapping("/alluserbuildingId")
 	public ResponseEntity<?> getUserforVister2(@RequestParam(required = false) Integer companyId,
 			@RequestParam(required = false) Integer buildingId, HttpServletRequest request) {
@@ -288,13 +310,31 @@ public class UserController {
 
 		return new ResponseEntity<>(users, HttpStatus.NO_CONTENT);
 	}
+	
+	
+	@PostMapping("/alluserbuildingId")
+	public ResponseEntity<?> getUserforVister3(@RequestBody UserFilterDto userFilterDto) {
+		
+		
+	
+		Response<?> users = userService.getUsers2(userFilterDto.getCompanyId() ,userFilterDto.getBuildingId());
+		
+		if (users.getStatus() == HttpStatus.OK.value()) {
+			return ResponseEntity.ok(users);
+		}
+
+		return new ResponseEntity<>(users, HttpStatus.NO_CONTENT);
+	}
+	
+	
 
 	@PostMapping("/excel/upload")
 	public ResponseEntity<?> upload(@RequestParam MultipartFile file, @RequestParam Integer companyId,
 			HttpServletRequest request) throws IOException {
 
 		String header = request.getHeader("Authorization");
-		if (header == null) {
+		if(header==null)
+		{
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You Are Not Authorize");
 		}
 
@@ -310,8 +350,7 @@ public class UserController {
 				Response<?> saveUsersByexcell = userService.saveUsersByexcellV2(file, companyId);
 				return new ResponseEntity<>(saveUsersByexcell, HttpStatus.valueOf(saveUsersByexcell.getStatus()));
 			} else {
-				return new ResponseEntity<>(new Response<>("Please Upload a excel Sheet", null, 400),
-						HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(new Response<>("Please Upload a excel Sheet",null,400),HttpStatus.BAD_REQUEST);
 //				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please Upload a excel Sheet");
 			}
 		}
@@ -320,6 +359,7 @@ public class UserController {
 
 	@GetMapping("/download/excel")
 	public ResponseEntity<Resource> downloadExcel(@RequestParam("filename") String filename) {
+
 
 		try {
 
@@ -356,7 +396,6 @@ public class UserController {
 		return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
 
 	}
-
 	@PostMapping("/access")
 	public ResponseEntity<?> acessUser(@RequestBody IsActiveDto activeDto, HttpServletRequest request) {
 

@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +15,6 @@ public interface FileService {
 
 	String uploadImage(MultipartFile image);
 
-//	String getFileUrl(ByteArrayInputStream file);
+	String getFileUrl(ByteArrayInputStream file);
 
 }
