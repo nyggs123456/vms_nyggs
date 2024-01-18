@@ -32,5 +32,5 @@ public interface RoomService {
 
 	public Response<?> getRoomWithMeetingsfordashboard2(Integer companyId, Integer buildingId);
 
-	public Response<?> getAllRoomFilter(Integer id, Integer buildingId);
+	Response<?> getAllRoomFilter(Integer companyId, Integer buildingId);
 }

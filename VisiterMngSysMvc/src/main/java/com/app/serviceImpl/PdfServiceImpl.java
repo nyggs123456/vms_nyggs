@@ -112,10 +112,6 @@ public class PdfServiceImpl implements PdfService {
 				contentStream.newLineAtOffset(0, -40);
 				contentStream.showText("Meeting Host   :  " + meetingDto.getUser().getFirstName() + " "
 						+ meetingDto.getUser().getLastName());
-				
-				contentStream.newLineAtOffset(0, -40);
-				contentStream.showText("Department     :  " + meetingDto.getUser().getDepartmentDto().getName() 
-						);
 
 				contentStream.newLineAtOffset(0, -40);
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
@@ -128,7 +124,7 @@ public class PdfServiceImpl implements PdfService {
 
 				SimpleDateFormat nextDayFormat = new SimpleDateFormat("dd/MM/YYYY");
 				String formattedEndTime = nextDayFormat.format(calendar.getTime());
-				contentStream.showText("Pass validity    :  " + formattedStartTime);
+				contentStream.showText("Pass validity    :   " + formattedStartTime);
 
 				contentStream.newLineAtOffset(0, -40);
 				if (meetingDto.getRoom() != null) {

@@ -154,74 +154,74 @@ public class FileServiceImpl implements FileService {
 		}
 	}
 
-	@Override
-	public String getFileUrl(ByteArrayInputStream file) {
-
-		String fileUrl = null;
-		try {
-			System.out.println(saveImage);
-			String url = saveImage;
-
-			// create an instance of RestTemplate
-			RestTemplate restTemplate = new RestTemplate();
-
-			// create headers
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-			// request body parameters
-			LinkedMultiValueMap<Object, Object> map = new LinkedMultiValueMap<>();
-			map.add("files", new MultipartInput(file, "meeting.xlsx"));
-
-			// send POST request
-			ResponseEntity<String> response = null;
-			String responseBody = null;
-
-			map.add("token", tokenForsave);
-			HttpEntity<LinkedMultiValueMap<Object, Object>> entity = new HttpEntity<>(map, headers);
-			response = restTemplate.postForEntity(url, entity, String.class);
-			responseBody = response.getBody();
-
-			if (response.getStatusCode().value() == 200) {
-				responseBody = response.getBody();
-				JsonObject jsonData = new Gson().fromJson(responseBody, JsonObject.class);
-				if (jsonData.has("data")) {
-					JsonObject dataJson = jsonData.get("data").getAsJsonObject();
-
-					if (dataJson.has("fileUrls")) {
-						JsonArray fileUrlsArray = dataJson.getAsJsonArray("fileUrls");
-						fileUrl = fileUrlsArray.get(0).getAsString();
-						return fileUrl;
-
-					}
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return fileUrl; // You might want to return the actual file URL if available in the response.
-	}
-
-	static class MultipartInput extends InputStreamResource {
-
-		private final String filename;
-
-		MultipartInput(InputStream inputStream, String filename) {
-			super(inputStream);
-			this.filename = filename;
-		}
-
-		@Override
-		public String getFilename() {
-			return this.filename;
-		}
-
-		@Override
-		public long contentLength() throws IOException {
-			return -1; // we do not want to generally read the whole stream into memory ...
-		}
-	}
+//	@Override
+//	public String getFileUrl(ByteArrayInputStream file) {
+//
+//		String fileUrl = null;
+//		try {
+//			System.out.println(saveImage);
+//			String url = saveImage;
+//
+//			// create an instance of RestTemplate
+//			RestTemplate restTemplate = new RestTemplate();
+//
+//			// create headers
+//			HttpHeaders headers = new HttpHeaders();
+//			headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//
+//			// request body parameters
+//			LinkedMultiValueMap<Object, Object> map = new LinkedMultiValueMap<>();
+//			map.add("files", new MultipartInput(file, "meeting.xlsx"));
+//
+//			// send POST request
+//			ResponseEntity<String> response = null;
+//			String responseBody = null;
+//
+//			map.add("token", tokenForsave);
+//			HttpEntity<LinkedMultiValueMap<Object, Object>> entity = new HttpEntity<>(map, headers);
+//			response = restTemplate.postForEntity(url, entity, String.class);
+//			responseBody = response.getBody();
+//
+//			if (response.getStatusCode().value() == 200) {
+//				responseBody = response.getBody();
+//				JsonObject jsonData = new Gson().fromJson(responseBody, JsonObject.class);
+//				if (jsonData.has("data")) {
+//					JsonObject dataJson = jsonData.get("data").getAsJsonObject();
+//
+//					if (dataJson.has("fileUrls")) {
+//						JsonArray fileUrlsArray = dataJson.getAsJsonArray("fileUrls");
+//						fileUrl = fileUrlsArray.get(0).getAsString();
+//						return fileUrl;
+//
+//					}
+//				}
+//			}
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		return fileUrl; // You might want to return the actual file URL if available in the response.
+//	}
+//
+//	static class MultipartInput extends InputStreamResource {
+//
+//		private final String filename;
+//
+//		MultipartInput(InputStream inputStream, String filename) {
+//			super(inputStream);
+//			this.filename = filename;
+//		}
+//
+//		@Override
+//		public String getFilename() {
+//			return this.filename;
+//		}
+//
+//		@Override
+//		public long contentLength() throws IOException {
+//			return -1; // we do not want to generally read the whole stream into memory ...
+//		}
+//	}
 
 }

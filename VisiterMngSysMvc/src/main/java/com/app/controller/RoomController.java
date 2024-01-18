@@ -31,11 +31,10 @@ public class RoomController {
 
 	@Autowired
 	private RoomService roomService;
-	
-	
-	@Autowired
-	private  Authorization  authorization;
 
+	@Autowired
+	private Authorization authorization;
+	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 //	@PostMapping("/save")
@@ -135,8 +134,9 @@ public class RoomController {
 
 
 }
-		
-		@GetMapping("/allbuilding")
+
+
+	@GetMapping("/allbuilding")
 		public ResponseEntity<?> getAll(@RequestParam(required = false) Integer id,
 				@RequestParam(required = false) Integer buildingId ,
 				HttpServletRequest request) {
@@ -191,23 +191,6 @@ public class RoomController {
 
 	}
 
-//	@PostMapping("/isActive")
-//	public ResponseEntity<?> isActiveRoom(@RequestBody IsActiveDto activeDto) {
-//
-//		boolean activate = activeDto.getIsActive();
-//		String status = null;
-//		if (activate == true) {
-//			status = "Activated";
-//		} else {
-//			status = "Deactivated";
-//		}
-//
-//		Response<?> response = roomService.delete(activeDto);
-//
-//		return new ResponseEntity<>(new CustomResponseDTO("Room " + status, HttpStatus.OK.value()),
-//				HttpStatus.valueOf(response.getStatus()));
-//	}
-	
 	@PostMapping("/isActive")
 	public ResponseEntity<?> isActiveRoom(@RequestBody IsActiveDto activeDto) {
 

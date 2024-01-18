@@ -36,7 +36,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.app.Dao.ConfigurationDao;
 import com.app.Dao.MeetingDao;
-import com.app.Dao.RoomDao;
 import com.app.Dao.UserDao;
 import com.app.authorize.Authorization;
 import com.app.dto.CustomResponseDTO;
@@ -73,9 +72,6 @@ public class MeetingController {
 
 	@Autowired
 	private PdfService pdfService;
-	
-	@Autowired
-	private RoomDao roomDao;
 
 	@Autowired
 	private MeetingDao meetingDao;
@@ -460,24 +456,24 @@ public class MeetingController {
 
 	}
 
-	@GetMapping("/demo")
-	public ResponseEntity<?> getmeetingdetails() {
-
-		try {
-			meetingService.automaticallyCancelledMeeting(30);
-
-			return ResponseEntity.ok("Meeting cancellation process initiated successfully");
-
-		} catch (Exception e) {
-
-			e.printStackTrace();
-
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-
-					.body("An error occurred while processing the meeting cancellation");
-		}
-
-	}
+//	@GetMapping("/demo")
+//	public ResponseEntity<?> getmeetingdetails() {
+//
+//		try {
+//			meetingService.automaticallyCancelledMeeting(30);
+//
+//			return ResponseEntity.ok("Meeting cancellation process initiated successfully");
+//
+//		} catch (Exception e) {
+//
+//			e.printStackTrace();
+//
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//
+//					.body("An error occurred while processing the meeting cancellation");
+//		}
+//
+//	}
 
 	@GetMapping("/deleteExcel")
 	public ResponseEntity<?> deleteOldFile() {

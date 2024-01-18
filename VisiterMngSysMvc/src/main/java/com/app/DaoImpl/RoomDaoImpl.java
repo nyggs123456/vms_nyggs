@@ -58,10 +58,6 @@ public class RoomDaoImpl implements RoomDao {
 		return criteria.list();
 	}
 
-	
-	
-	
-	
 	@Override
 	public List<Room> getAllactive(Integer companyId) {
 
@@ -69,7 +65,7 @@ public class RoomDaoImpl implements RoomDao {
 
 		// Add criteria to filter rooms based on the companyId
 		criteria.add(Restrictions.eq("isActive", true));
-	//	criteria.add(Restrictions.eq("isAvailable" , true));
+		// criteria.add(Restrictions.eq("isAvailable" , true));
 
 		// Create an alias for the "company" property to be able to reference it in the
 		// criteria
@@ -82,15 +78,15 @@ public class RoomDaoImpl implements RoomDao {
 	}
 
 	@Override
-	public List<Room> getAll2(Integer companyId, Integer buildingId) {
+	public List<Room> getAllRoomFilter(Integer companyId, Integer buildingId) {
 
 	    Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Room.class);
 	    Conjunction conjunction = Restrictions.conjunction();
 	    
 	    criteria.createAlias("company", "c");
 	    criteria.createAlias("c.building", "b");
-	    criteria.add(Restrictions.eq("isActive", true));
-	//	criteria.add(Restrictions.eq("isAvailable" , true));
+//	    criteria.add(Restrictions.eq("isActive", true));
+//		criteria.add(Restrictions.eq("isAvailable" , true));
 	    
 
 	    if(buildingId ==null && companyId !=null) {
@@ -114,18 +110,17 @@ public class RoomDaoImpl implements RoomDao {
 
 	    return criteria.list();
 	}
-	
-	
-	@Override
-	public List<Room> getAllRoomFilter(Integer companyId, Integer buildingId) {
+
+    @Override
+	public List<Room> getAll2(Integer companyId, Integer buildingId) {
 
 	    Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Room.class);
 	    Conjunction conjunction = Restrictions.conjunction();
 	    
 	    criteria.createAlias("company", "c");
 	    criteria.createAlias("c.building", "b");
-//	    criteria.add(Restrictions.eq("isActive", true));
-//		criteria.add(Restrictions.eq("isAvailable" , true));
+	    criteria.add(Restrictions.eq("isActive", true));
+	//	criteria.add(Restrictions.eq("isAvailable" , true));
 	    
 
 	    if(buildingId ==null && companyId !=null) {

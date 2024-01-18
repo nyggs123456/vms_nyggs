@@ -109,11 +109,11 @@ public class RoomServiceImpl implements RoomService {
 			return new Response<>("Room not found", null, HttpStatus.BAD_REQUEST.value());
 		}
 	}
-	
-	@Override
-	public Response<?> getAll2(Integer companyId , Integer buildingId) {
 
-		List<Room> allRooms = this.roomDao.getAll2(companyId,buildingId);
+	@Override
+	public Response<?> getAll2(Integer companyId, Integer buildingId) {
+
+		List<Room> allRooms = this.roomDao.getAll2(companyId, buildingId);
 		System.out.println("room size = " + allRooms.size());
 
 		return new Response<>("success", allRooms, HttpStatus.OK.value());
@@ -137,12 +137,12 @@ public class RoomServiceImpl implements RoomService {
 
 		Room byId = roomDao.getById(isActiveDto.getId());
 		if (!isActiveDto.getIsActive() && !byId.getIsAvailable()) {
-			return new Response<>("Room is Occupied in a meting ", null, 400);
+			return new Response<>("Room is Occupied in another meeting ", null, 400);
 		}
 
 		Room delete = roomDao.delete(isActiveDto);
 		return new Response<>("Success", roomDao.delete(isActiveDto), 200);
-	} 
+	}
 
 	@Override
 	public Response<?> getRoomWithMeetingsfordashboard(Integer companyId) {
@@ -192,12 +192,11 @@ public class RoomServiceImpl implements RoomService {
 		return new Response<>("Success", allroomsWithMeetings, HttpStatus.OK.value());
 	}
 
-	
 	@Override
 	public Response<?> getRoomWithMeetingsfordashboard2(Integer companyId, Integer buildingId) {
-		
-		List<Room> allrooms = roomDao.getAllactive2(companyId,buildingId);
-		
+
+		List<Room> allrooms = roomDao.getAllactive2(companyId, buildingId);
+
 		System.out.println("All rooms size, " + allrooms.size());
 		if (allrooms.isEmpty()) {
 			return new Response<>("Room Not Found For Your Company", null, HttpStatus.NO_CONTENT.value());
@@ -242,8 +241,6 @@ public class RoomServiceImpl implements RoomService {
 		return new Response<>("Success", allroomsWithMeetings, HttpStatus.OK.value());
 	}
 
-
-	
 	@Override
 	public Response<?> deleteRoomByID(Integer roomId) {
 
