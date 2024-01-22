@@ -313,21 +313,52 @@ public class MeetingDaoImpl implements MeetingDao {
 			criteria.add(Restrictions.eq("status", request.getStatus()));
 		}
 
+//		if (request.getBuildingId() != null && request.getCompanyId() == null) {
+//	        criteria.createAlias("employee", "e1");
+//	        criteria.createAlias("e1.company", "c1");
+//	        criteria.createAlias("c1.building", "b");
+//
+//	        criteria.add(Restrictions.eq("b.buildingId", request.getBuildingId())); 
+//	    }
+//		
+//		if (request.getBuildingId() == null && request.getCompanyId() != null) {
+//	        criteria.createAlias("employee", "e2");
+//	        criteria.createAlias("e2.company", "c2");
+//
+//	        criteria.add(Restrictions.eq("c2.id", request.getCompanyId())); 
+//	    }
+//	      
+//	    if (request.getBuildingId() != null && request.getCompanyId() != null) {
+//	        // Assuming "employee" is a relationship with the "User" entity
+//	        criteria.createAlias("employee", "e");
+//	        criteria.createAlias("e.company", "c1");
+//	        criteria.createAlias("c1.building", "b1");
+//
+//	        Conjunction conjunction = Restrictions.conjunction();
+//	        conjunction.add(Restrictions.eq("b1.buildingId", request.getBuildingId()));
+//	        conjunction.add(Restrictions.eq("c1.id", request.getCompanyId()));
+//
+//	        criteria.add(conjunction);
+//	    }
+		
 		if (request.getBuildingId() != null && request.getCompanyId() == null) {
 	        criteria.createAlias("employee", "e1");
 	        criteria.createAlias("e1.company", "c1");
 	        criteria.createAlias("c1.building", "b");
 
 	        criteria.add(Restrictions.eq("b.buildingId", request.getBuildingId())); 
+	        criteria.add(Restrictions.eq("c1.active", true));
 	    }
-		
+	      
 		if (request.getBuildingId() == null && request.getCompanyId() != null) {
 	        criteria.createAlias("employee", "e2");
 	        criteria.createAlias("e2.company", "c2");
+	        
 
 	        criteria.add(Restrictions.eq("c2.id", request.getCompanyId())); 
+	        criteria.add(Restrictions.eq("c2.active", true));
 	    }
-	      
+		
 	    if (request.getBuildingId() != null && request.getCompanyId() != null) {
 	        // Assuming "employee" is a relationship with the "User" entity
 	        criteria.createAlias("employee", "e");
@@ -337,6 +368,7 @@ public class MeetingDaoImpl implements MeetingDao {
 	        Conjunction conjunction = Restrictions.conjunction();
 	        conjunction.add(Restrictions.eq("b1.buildingId", request.getBuildingId()));
 	        conjunction.add(Restrictions.eq("c1.id", request.getCompanyId()));
+	        conjunction.add(Restrictions.eq("c1.active", true));
 
 	        criteria.add(conjunction);
 	    }
@@ -357,14 +389,31 @@ public class MeetingDaoImpl implements MeetingDao {
 			}
 		}
 
-		// Visitor filter
+//		// Visitor filter
+//		if (request.getPhoneNumber() != null) {
+//
+//			System.out.println("inside");
+//
+//			Visitor visitor = visitorDao.findByPhone(request.getPhoneNumber());
+//
+//			criteria.add(Restrictions.eq("visitor", visitor));
+//
+//		}
+		
 		if (request.getPhoneNumber() != null) {
+			
+			 List<Visitor> matchingVisitors = visitorDao.findByPhoneLike(request.getPhoneNumber());
+			 
+			    if (!matchingVisitors.isEmpty()) {
+			       
+			        Disjunction disjunction = Restrictions.disjunction();
+			        for (Visitor matchingVisitor : matchingVisitors) {
+			            disjunction.add(Restrictions.like("visitor", matchingVisitor ));
+			        }
+			       
+			       criteria.add(disjunction);
+			    }
 
-			System.out.println("inside");
-
-			Visitor visitor = visitorDao.findByPhone(request.getPhoneNumber());
-
-			criteria.add(Restrictions.eq("visitor", visitor));
 
 		}
 
@@ -436,13 +485,16 @@ public class MeetingDaoImpl implements MeetingDao {
 	        criteria.createAlias("c1.building", "b");
 
 	        criteria.add(Restrictions.eq("b.buildingId", request.getBuildingId())); 
+	        criteria.add(Restrictions.eq("c1.active", true));
 	    }
 	      
 		if (request.getBuildingId() == null && request.getCompanyId() != null) {
 	        criteria.createAlias("employee", "e2");
 	        criteria.createAlias("e2.company", "c2");
+	        
 
 	        criteria.add(Restrictions.eq("c2.id", request.getCompanyId())); 
+	        criteria.add(Restrictions.eq("c2.active", true));
 	    }
 		
 	    if (request.getBuildingId() != null && request.getCompanyId() != null) {
@@ -454,6 +506,7 @@ public class MeetingDaoImpl implements MeetingDao {
 	        Conjunction conjunction = Restrictions.conjunction();
 	        conjunction.add(Restrictions.eq("b1.buildingId", request.getBuildingId()));
 	        conjunction.add(Restrictions.eq("c1.id", request.getCompanyId()));
+	        conjunction.add(Restrictions.eq("c1.active", true));
 
 	        criteria.add(conjunction);
 	    }
@@ -491,14 +544,31 @@ public class MeetingDaoImpl implements MeetingDao {
 			}
 		}
 
+//		if (request.getPhoneNumber() != null) {
+//
+//			Visitor visitor = visitorDao.findByPhone(request.getPhoneNumber());
+//
+//			criteria.add(Restrictions.eq("visitor", visitor));
+//
+//		}
+
 		if (request.getPhoneNumber() != null) {
+			
+			 List<Visitor> matchingVisitors = visitorDao.findByPhoneLike(request.getPhoneNumber());
+			 
+			    if (!matchingVisitors.isEmpty()) {
+			       
+			        Disjunction disjunction = Restrictions.disjunction();
+			        for (Visitor matchingVisitor : matchingVisitors) {
+			            disjunction.add(Restrictions.like("visitor", matchingVisitor ));
+			        }
+			       
+			       criteria.add(disjunction);
+			    }
 
-			Visitor visitor = visitorDao.findByPhone(request.getPhoneNumber());
-
-			criteria.add(Restrictions.eq("visitor", visitor));
 
 		}
-
+		
 		criteria.setProjection(Projections.rowCount());
 		return ((Number) criteria.uniqueResult()).intValue();
 	}

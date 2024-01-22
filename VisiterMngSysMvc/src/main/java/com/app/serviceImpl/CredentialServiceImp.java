@@ -51,12 +51,18 @@ public class CredentialServiceImp implements CredentialService {
 
 			// Create the HTML email content with placeholders
 			user.getCompany().getName();
-			String emailContent = "<html><body>" + "<h2>" + user.getCompany().getName() + "</h2>" + "<p>Dear "
-					+ user.getFirstname() + "  " + user.getLastname() + ",</p>"
-					+ "<p>Your registration was successful. Here are your credential:</p>" + "<ul>"
-					+ "<li><strong>Username:</strong> " + credentialMaster.getUsername() + "</li>"
-					+ "<li><strong>Password:</strong> " + password + "</li>" + "</ul>"
-					+ "<p>Thank you for joining us!</p>" + "</body></html>";
+			String emailContent = "<html><body>" +
+                    "<h2>" + user.getCompany().getName() + "</h2>" +
+                    "<p>Dear " + user.getFirstname() + " " + user.getLastname() + ",</p>" +
+                    "<p>Your registration was successful. Here are your credentials:</p>" +
+                    "<ul>" +
+                    "<li><strong>Username:</strong> " + credentialMaster.getUsername() + "</li>" +
+                    "<li><strong>Password:</strong> " + password + "</li>" +
+                    "</ul>" +
+                    "<p>Thank you for joining us!</p>" +
+                    "<p>Login URL: <a href=\"https://vms.nyggs.com/\">https://vms.nyggs.com/</a></p>" +
+                    "</body></html>";
+
 
 			Thread emailThread = new Thread(() -> {
 

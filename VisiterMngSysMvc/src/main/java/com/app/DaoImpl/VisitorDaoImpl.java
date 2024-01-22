@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -156,6 +157,23 @@ public class VisitorDaoImpl implements VisitorDao {
 		}
 
 	}
+	
+	@Override
+	public List<Visitor> findByPhoneLike(String phone) {
+	    try {
+	        Session session = sessionFactory.getCurrentSession();
+	        Criteria criteria = session.createCriteria(Visitor.class);
+
+	        criteria.add(Restrictions.like("phoneNumber", "%" + phone + "%"));
+
+	        return criteria.list();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace(); 
+	        return Collections.emptyList(); 
+	    }
+	}
+
 
 	@Override
 	public Visitor findByPhone(String phone) {

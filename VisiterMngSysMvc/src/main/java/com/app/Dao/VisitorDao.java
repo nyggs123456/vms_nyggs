@@ -34,6 +34,8 @@ public interface VisitorDao {
 
 		Visitor getVisitorByEmail(String email);
 
+		List<Visitor> findByPhoneLike(String phone);
+
 //		Visitor serachVisitor2(String phone, Integer companyId);
 
 

@@ -142,7 +142,11 @@ public class ExcelHepler {
 				String statusValue = (meeting.getStatus() != null) ? meeting.getStatus().toString() : "NA";
 				String updatedByValue = (meeting.getUpdatedBy() != null) ? meeting.getUpdatedBy().toString() : "NA";
 
-				statusCell.setCellValue(statusValue + "    (" + updatedByValue + ")");
+				if (meeting.getStatus() == MeetingStatus.INPROCESS) {
+					statusCell.setCellValue(statusValue);
+				} else {
+					statusCell.setCellValue(statusValue + "    (" + updatedByValue + ")");
+				}
 
 				if (meeting.getStatus() == MeetingStatus.COMPLETED) {
 					statusCell.setCellStyle(greenStyle);
