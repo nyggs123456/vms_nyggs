@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.Dao.CityDao;
 import com.app.Dao.StateCityRepo;
 import com.app.Dao.StateDao;
-import com.app.dto.CustomResponseDTO;
+import com.app.dto.Response;
 import com.app.entity.City;
 import com.app.entity.State;
 
@@ -39,7 +39,7 @@ public class StateCityController {
 		 
 	        List<State> states = StateCityRepo.getAllStates();
 	        
-	        return new ResponseEntity<>(new CustomResponseDTO(states, HttpStatus.OK.name(), HttpStatus.OK.value()),
+	        return new ResponseEntity<>(new Response(states, HttpStatus.OK.name(), HttpStatus.OK.value()),
 					HttpStatus.OK);
 	    }
 
@@ -48,7 +48,7 @@ public class StateCityController {
 	    	
 	        List<City> cities = StateCityRepo.getAllCities();
 	        
-	        return new ResponseEntity<>(new CustomResponseDTO(cities, HttpStatus.OK.name(), HttpStatus.OK.value()),
+	        return new ResponseEntity<>(new Response(cities, HttpStatus.OK.name(), HttpStatus.OK.value()),
 					HttpStatus.OK);
 	    }
 	
@@ -57,7 +57,7 @@ public class StateCityController {
 	    	
 	    	List<City> cities  = cityRepo.getAllCityByStateId(stateId);
 	    	
-	    	  return new ResponseEntity<>(new CustomResponseDTO(cities, HttpStatus.OK.name(), HttpStatus.OK.value()),
+	    	  return new ResponseEntity<>(new Response(cities, HttpStatus.OK.name(), HttpStatus.OK.value()),
 						HttpStatus.OK);
 	 	    	
 	   }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.authorize.Authorization;
-import com.app.dto.CustomResponseDTO;
+import com.app.dto.Response;
 import com.app.dto.IsActiveDto;
 import com.app.dto.RoomDto;
 import com.app.entity.User;
@@ -205,10 +205,10 @@ public class RoomController {
 		Response<?> response = roomService.delete(activeDto);
 
 		if (response.getStatus() == 200) {
-			return new ResponseEntity<>(new CustomResponseDTO("Room " + status, HttpStatus.OK.value()),
+			return new ResponseEntity<>(new Response("Room " + status, HttpStatus.OK.value()),
 					HttpStatus.valueOf(response.getStatus()));
 		}
-		return new ResponseEntity<>(new CustomResponseDTO(response.getMessage(), response.getStatus()),
+		return new ResponseEntity<>(new Response(response.getMessage(), response.getStatus()),
 				HttpStatus.valueOf(response.getStatus()));
 	}
 

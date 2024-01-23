@@ -3,7 +3,7 @@ package com.app.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CustomResponseDTO {
+public class Response {
 
 	private Object data;
 
@@ -11,7 +11,7 @@ public class CustomResponseDTO {
 
 	private Integer statusCode;
 
-	public CustomResponseDTO() {
+	public Response() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -40,14 +40,14 @@ public class CustomResponseDTO {
 		this.statusCode = statusCode;
 	}
 
-	public CustomResponseDTO(Object data, String message, Integer statusCode) {
+	public Response(Object data, String message, Integer statusCode) {
 		super();
 		this.data = data;
 		this.message = message;
 		this.statusCode = statusCode;
 	}
 
-	public CustomResponseDTO(String message, Integer statusCode) {
+	public Response(String message, Integer statusCode) {
 		super();
 		this.message = message;
 		this.statusCode = statusCode;

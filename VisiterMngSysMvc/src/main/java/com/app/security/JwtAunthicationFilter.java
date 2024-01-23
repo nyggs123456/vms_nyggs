@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.app.dto.CustomResponseDTO;
+import com.app.dto.Response;
 import com.app.serviceImpl.CustumUserDetalisService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -58,7 +58,7 @@ public class JwtAunthicationFilter extends OncePerRequestFilter {
                     
                 } catch (Exception e) {
                 	
-                	   CustomResponseDTO customResponse = new CustomResponseDTO(null, "Invalid Token", HttpStatus.FORBIDDEN.value());
+                	   Response customResponse = new Response(null, "Invalid Token", HttpStatus.FORBIDDEN.value());
 
                        sendJsonResponse(response, customResponse, HttpStatus.FORBIDDEN);
 
@@ -77,7 +77,7 @@ public class JwtAunthicationFilter extends OncePerRequestFilter {
                     
                 } catch (UsernameNotFoundException e) {
                 	
-                	  CustomResponseDTO customResponse = new CustomResponseDTO(null, "User Not Found", HttpStatus.UNAUTHORIZED.value());
+                	  Response customResponse = new Response(null, "User Not Found", HttpStatus.UNAUTHORIZED.value());
 
                       sendJsonResponse(response, customResponse, HttpStatus.UNAUTHORIZED);
                       
@@ -89,7 +89,7 @@ public class JwtAunthicationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
     
-    private void sendJsonResponse(HttpServletResponse response, CustomResponseDTO customResponse, HttpStatus status) throws IOException {
+    private void sendJsonResponse(HttpServletResponse response, Response customResponse, HttpStatus status) throws IOException {
         ObjectMapper objectMapper = objectMapperBuilder.build();
         response.setStatus(status.value());
         response.setContentType("application/json");

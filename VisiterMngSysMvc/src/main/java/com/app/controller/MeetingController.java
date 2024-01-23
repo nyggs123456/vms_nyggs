@@ -38,7 +38,7 @@ import com.app.Dao.ConfigurationDao;
 import com.app.Dao.MeetingDao;
 import com.app.Dao.UserDao;
 import com.app.authorize.Authorization;
-import com.app.dto.CustomResponseDTO;
+import com.app.dto.Response;
 import com.app.dto.MeetingDto;
 import com.app.dto.PaginationRequest;
 import com.app.dto.UpdateMeetingDto;
@@ -261,7 +261,7 @@ public class MeetingController {
 
 		if (!todayDateUTC.isEqual(meetingStartDateUTC)) {
 			return new ResponseEntity<>(
-					new CustomResponseDTO("Meeting pass is not valid today.", HttpStatus.BAD_REQUEST.value()),
+					new Response("Meeting pass is not valid today.", HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 		}
 
@@ -313,7 +313,7 @@ public class MeetingController {
 		} else {
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO("Meeting pass has been expired !! ", HttpStatus.BAD_REQUEST.value()),
+					new Response("Meeting pass has been expired !! ", HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		}
@@ -335,7 +335,7 @@ public class MeetingController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		}
@@ -370,7 +370,7 @@ public class MeetingController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(
-					new CustomResponseDTO("Error in exporting Excel data", HttpStatus.BAD_REQUEST.value()),
+					new Response("Error in exporting Excel data", HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 		}
 	}

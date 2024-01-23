@@ -24,9 +24,9 @@ public class Authorization {
 	@Autowired
 	private RoleDao role;
 
-	public User authorizegetallUserdetalis(String username) {
+	public User authorizegetallUserdetalis(String token) {
 
-		String usernameFromToken = jwtHelper.getUsernameFromToken(username);
+		String usernameFromToken = jwtHelper.getUsernameFromToken(token);
 		User user = userDao.getUserbyPhone(usernameFromToken);
 		if (user != null && user.getRole().getName().equals("SUPERADMIN") || user.getRole().getName().equals("ADMIN")) {
 			return user;

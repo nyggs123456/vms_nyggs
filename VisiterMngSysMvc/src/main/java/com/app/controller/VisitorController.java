@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.app.dto.CustomResponseDTO;
+import com.app.dto.Response;
 import com.app.dto.MeetingDto;
 import com.app.dto.VisitorDto;
 import com.app.dto.VisitorMeetingDetailsDto;
@@ -91,7 +91,7 @@ public class VisitorController {
 
 				Response<?> addVisitor = visitorService.addVisitor(visitorDto);
 				if (addVisitor.getStatus() == HttpStatus.OK.value()) {
-					CustomResponseDTO response = new CustomResponseDTO(addVisitor, HttpStatus.OK.name(),
+					Response response = new Response(addVisitor, HttpStatus.OK.name(),
 							HttpStatus.OK.value());
 
 					return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
@@ -102,7 +102,7 @@ public class VisitorController {
 
 				VisitorDto updateVisitor = visitorService.updateVisitor(phoneNumber, visitorDto);
 
-				CustomResponseDTO response = new CustomResponseDTO(updateVisitor, HttpStatus.OK.name(),
+				Response response = new Response(updateVisitor, HttpStatus.OK.name(),
 						HttpStatus.OK.value());
 
 				return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
@@ -113,7 +113,7 @@ public class VisitorController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		}
@@ -127,7 +127,7 @@ public class VisitorController {
 
 			List<MeetingContext> meetingContext = Arrays.asList(MeetingContext.values());
 
-			CustomResponseDTO response = new CustomResponseDTO(meetingContext, "Meeting context fetched successfully",
+			Response response = new Response(meetingContext, "Meeting context fetched successfully",
 					HttpStatus.OK.value());
 
 			return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
@@ -137,7 +137,7 @@ public class VisitorController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		}
@@ -152,7 +152,7 @@ public class VisitorController {
 			List<MeetingStatus> meetingStatus = Arrays.asList(MeetingStatus.APPROVED, MeetingStatus.COMPLETED,
 					MeetingStatus.PENDING, MeetingStatus.CANCELLED, MeetingStatus.INPROCESS);
 
-			CustomResponseDTO response = new CustomResponseDTO(meetingStatus, "Meeting Statusfetched successfully",
+			Response response = new Response(meetingStatus, "Meeting Statusfetched successfully",
 					HttpStatus.OK.value());
 
 			return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
@@ -162,7 +162,7 @@ public class VisitorController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		}
@@ -176,7 +176,7 @@ public class VisitorController {
 
 			List<MeetingStatus> meetingStatus = Arrays.asList(MeetingStatus.APPROVED, MeetingStatus.CANCELLED);
 
-			CustomResponseDTO response = new CustomResponseDTO(meetingStatus, "Meeting Statusfetched successfully",
+			Response response = new Response(meetingStatus, "Meeting Statusfetched successfully",
 					HttpStatus.OK.value());
 
 			return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
@@ -186,7 +186,7 @@ public class VisitorController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		}
@@ -200,7 +200,7 @@ public class VisitorController {
 
 			List<Visitor> visitors = visitorService.getAllVisitors();
 
-			CustomResponseDTO response = new CustomResponseDTO(visitors, HttpStatus.OK.name(), HttpStatus.OK.value());
+			Response response = new Response(visitors, HttpStatus.OK.name(), HttpStatus.OK.value());
 
 			return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
 
@@ -209,7 +209,7 @@ public class VisitorController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		}
@@ -239,7 +239,7 @@ public class VisitorController {
 
 		if (!matcher.matches()) {
 
-			CustomResponseDTO response = new CustomResponseDTO("Invalid phone number format",
+			Response response = new Response("Invalid phone number format",
 					HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
@@ -250,14 +250,14 @@ public class VisitorController {
 
 			if (serachVisitor != null) {
 
-				CustomResponseDTO response = new CustomResponseDTO(serachVisitor, HttpStatus.OK.name(),
+				Response response = new Response(serachVisitor, HttpStatus.OK.name(),
 						HttpStatus.OK.value());
 
 				return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
 
 			} else {
 
-				return new ResponseEntity<>(new CustomResponseDTO("Meetings Not Found", HttpStatus.BAD_REQUEST.value()),
+				return new ResponseEntity<>(new Response("Meetings Not Found", HttpStatus.BAD_REQUEST.value()),
 						HttpStatus.BAD_REQUEST);
 
 			}
@@ -267,7 +267,7 @@ public class VisitorController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		} finally {
@@ -283,7 +283,7 @@ public class VisitorController {
 
 		if (!matcher.matches()) {
 
-			CustomResponseDTO response = new CustomResponseDTO("Invalid phone number format",
+			Response response = new Response("Invalid phone number format",
 					HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value());
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
@@ -295,14 +295,14 @@ public class VisitorController {
 
 			if (serachVisitor != null) {
 
-				CustomResponseDTO response = new CustomResponseDTO(VisitorDto.convertToDTO(serachVisitor),
+				Response response = new Response(VisitorDto.convertToDTO(serachVisitor),
 						HttpStatus.OK.name(), HttpStatus.OK.value());
 
 				return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
 
 			} else {
 
-				return new ResponseEntity<>(new CustomResponseDTO("Visiter Not Found", HttpStatus.BAD_REQUEST.value()),
+				return new ResponseEntity<>(new Response("Visiter Not Found", HttpStatus.BAD_REQUEST.value()),
 						HttpStatus.BAD_REQUEST);
 
 			}
@@ -312,7 +312,7 @@ public class VisitorController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		} finally {
@@ -369,7 +369,7 @@ public class VisitorController {
 
 			List<VisitorMeetingDetailsDto> visitors = visitorService.getAllVisitorsByUserId(userId);
 
-			CustomResponseDTO response = new CustomResponseDTO(visitors, "Meeting details of the employee",
+			Response response = new Response(visitors, "Meeting details of the employee",
 					HttpStatus.OK.value());
 
 			return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
@@ -379,7 +379,7 @@ public class VisitorController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		}
@@ -393,7 +393,7 @@ public class VisitorController {
 
 			List<Meeting> meetings = visitorService.getAllMeeting();
 
-			CustomResponseDTO response = new CustomResponseDTO(meetings, "All meeting details!!",
+			Response response = new Response(meetings, "All meeting details!!",
 					HttpStatus.OK.value());
 
 			return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
@@ -403,7 +403,7 @@ public class VisitorController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 
 		}
@@ -419,12 +419,12 @@ public class VisitorController {
 			String fileName = this.fileService.uploadImage(image);
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(fileName, "Image uploaded successfully", HttpStatus.OK.value()),
+					new Response(fileName, "Image uploaded successfully", HttpStatus.OK.value()),
 					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(
-					new CustomResponseDTO("Failed to upload image", HttpStatus.INTERNAL_SERVER_ERROR.value()),
+					new Response("Failed to upload image", HttpStatus.INTERNAL_SERVER_ERROR.value()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

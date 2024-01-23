@@ -43,7 +43,7 @@ import com.app.Dao.StateDao;
 import com.app.authorize.Authorization;
 import com.app.dto.CompanyDTO;
 import com.app.dto.CompanyPaginatedResponse;
-import com.app.dto.CustomResponseDTO;
+import com.app.dto.Response;
 import com.app.dto.IsActiveDto;
 import com.app.dto.PaginationRequest;
 import com.app.dto.SerachCompnyRequest;
@@ -160,25 +160,25 @@ public class CompanyController {
 			if (companyDTO.getImage().isEmpty()) {
 
 				return new ResponseEntity<>(
-						new CustomResponseDTO("Comapany Logo must not be null", HttpStatus.BAD_REQUEST.value()),
+						new Response("Comapany Logo must not be null", HttpStatus.BAD_REQUEST.value()),
 						HttpStatus.BAD_REQUEST);
 			}
 
 			CompanyDTO saveCompany = companyService.saveCompany(companyDTO);
 
-			CustomResponseDTO response = new CustomResponseDTO(saveCompany, HttpStatus.OK.name(),
+			Response response = new Response(saveCompany, HttpStatus.OK.name(),
 					HttpStatus.OK.value());
 
 			return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
 
 		} catch (CompanyAlreadyExistsException ex) {
 
-			return new ResponseEntity<>(new CustomResponseDTO(ex.getMessage(), HttpStatus.CONFLICT.value()),
+			return new ResponseEntity<>(new Response(ex.getMessage(), HttpStatus.CONFLICT.value()),
 					HttpStatus.CONFLICT);
 
 		} catch (ConstraintViolationException ex) {
 
-			return new ResponseEntity<>(new CustomResponseDTO(ex.getMessage(), HttpStatus.CONFLICT.value()),
+			return new ResponseEntity<>(new Response(ex.getMessage(), HttpStatus.CONFLICT.value()),
 					HttpStatus.CONFLICT);
 
 		} catch (Exception e) {
@@ -186,7 +186,7 @@ public class CompanyController {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
+					new Response(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 		}
 
@@ -209,15 +209,15 @@ public class CompanyController {
 			CompanyDTO company = companyService.getCompanyById(id);
 
 			if (company != null) {
-				return new ResponseEntity<>(new CustomResponseDTO(company, HttpStatus.OK.name(), HttpStatus.OK.value()),
+				return new ResponseEntity<>(new Response(company, HttpStatus.OK.name(), HttpStatus.OK.value()),
 						HttpStatus.OK);
 			} else {
-				return new ResponseEntity<>(new CustomResponseDTO("Company not found", HttpStatus.NOT_FOUND.value()),
+				return new ResponseEntity<>(new Response("Company not found", HttpStatus.NOT_FOUND.value()),
 						HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(
-					new CustomResponseDTO("Failed to fetch company", HttpStatus.INTERNAL_SERVER_ERROR.value()),
+					new Response("Failed to fetch company", HttpStatus.INTERNAL_SERVER_ERROR.value()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -240,13 +240,13 @@ public class CompanyController {
 
 			List<Company> companies = companyService.getAllCompanies();
 
-			return new ResponseEntity<>(new CustomResponseDTO(companies, "Companies found", HttpStatus.OK.value()),
+			return new ResponseEntity<>(new Response(companies, "Companies found", HttpStatus.OK.value()),
 					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO("Failed to fetch companies", HttpStatus.INTERNAL_SERVER_ERROR.value()),
+					new Response("Failed to fetch companies", HttpStatus.INTERNAL_SERVER_ERROR.value()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -266,7 +266,7 @@ public class CompanyController {
 
 			return new ResponseEntity<>(
 
-					new CustomResponseDTO("Failed to fetch companies", HttpStatus.INTERNAL_SERVER_ERROR.value()),
+					new Response("Failed to fetch companies", HttpStatus.INTERNAL_SERVER_ERROR.value()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 
 		}
@@ -281,13 +281,13 @@ public class CompanyController {
 			List<CompanyDTO> companies = companyService.searchCompany(searchResuest.getStateId().getId(),
 					searchResuest.getCompanyName(), searchResuest.getIsActive());
 
-			return new ResponseEntity<>(new CustomResponseDTO(companies, "Companies found", HttpStatus.OK.value()),
+			return new ResponseEntity<>(new Response(companies, "Companies found", HttpStatus.OK.value()),
 					HttpStatus.OK);
 
 		} catch (Exception e) {
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO("No companies Found", HttpStatus.INTERNAL_SERVER_ERROR.value()),
+					new Response("No companies Found", HttpStatus.INTERNAL_SERVER_ERROR.value()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 
 		}
@@ -355,25 +355,25 @@ public class CompanyController {
 
 				CompanyDTO updatedCompany = this.companyService.updateCompany(id, companyDTO);
 
-				CustomResponseDTO response = new CustomResponseDTO(updatedCompany, HttpStatus.OK.name(),
+				Response response = new Response(updatedCompany, HttpStatus.OK.name(),
 						HttpStatus.OK.value());
 
 				return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatusCode()));
 			} else {
-				return new ResponseEntity<>(new CustomResponseDTO("Company not found", HttpStatus.NOT_FOUND.value()),
+				return new ResponseEntity<>(new Response("Company not found", HttpStatus.NOT_FOUND.value()),
 						HttpStatus.NOT_FOUND);
 			}
 
 		} catch (CompanyAlreadyExistsException ex) {
 
-			return new ResponseEntity<>(new CustomResponseDTO(ex.getMessage(), HttpStatus.CONFLICT.value()),
+			return new ResponseEntity<>(new Response(ex.getMessage(), HttpStatus.CONFLICT.value()),
 					HttpStatus.CONFLICT);
 		}
 
 		catch (Exception e) {
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR.value()),
+					new Response("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR.value()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -399,14 +399,14 @@ public class CompanyController {
 		}
 		if (id != null && activeDto.getIsActive() == true) {
 
-			return new ResponseEntity<>(new CustomResponseDTO("Company Activated ", HttpStatus.OK.value()),
+			return new ResponseEntity<>(new Response("Company Activated ", HttpStatus.OK.value()),
 					HttpStatus.OK);
 
 		} else if (id != null)
-			return new ResponseEntity<>(new CustomResponseDTO("Company Deactivated", HttpStatus.OK.value()),
+			return new ResponseEntity<>(new Response("Company Deactivated", HttpStatus.OK.value()),
 					HttpStatus.OK);
 		else {
-			return new ResponseEntity<>(new CustomResponseDTO("Company Not found", HttpStatus.BAD_REQUEST.value()),
+			return new ResponseEntity<>(new Response("Company Not found", HttpStatus.BAD_REQUEST.value()),
 					HttpStatus.BAD_REQUEST);
 		}
 
@@ -420,12 +420,12 @@ public class CompanyController {
 			List<IsActiveDto> statusCompanies = companyService.getAllCompaniesStatus();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(statusCompanies, "Companies found", HttpStatus.OK.value()), HttpStatus.OK);
+					new Response(statusCompanies, "Companies found", HttpStatus.OK.value()), HttpStatus.OK);
 
 		} catch (Exception e) {
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO("Failed to Status of companies", HttpStatus.INTERNAL_SERVER_ERROR.value()),
+					new Response("Failed to Status of companies", HttpStatus.INTERNAL_SERVER_ERROR.value()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -453,12 +453,12 @@ public class CompanyController {
 			String fileName = this.fileService.uploadImage(image);
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO(fileName, "Image uploaded successfully", HttpStatus.OK.value()),
+					new Response(fileName, "Image uploaded successfully", HttpStatus.OK.value()),
 					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(
-					new CustomResponseDTO("Failed to upload image", HttpStatus.INTERNAL_SERVER_ERROR.value()),
+					new Response("Failed to upload image", HttpStatus.INTERNAL_SERVER_ERROR.value()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -495,13 +495,13 @@ public class CompanyController {
 		try {
 			CompanyPaginatedResponse allCompanies = companyService.getAllCompanies(paginationRequest);
 
-			return new ResponseEntity<>(new CustomResponseDTO(allCompanies, "Companies found", HttpStatus.OK.value()),
+			return new ResponseEntity<>(new Response(allCompanies, "Companies found", HttpStatus.OK.value()),
 					HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(
-					new CustomResponseDTO("Failed to fetch companies", HttpStatus.INTERNAL_SERVER_ERROR.value()),
+					new Response("Failed to fetch companies", HttpStatus.INTERNAL_SERVER_ERROR.value()),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -533,7 +533,7 @@ public class CompanyController {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return new ResponseEntity<>(
-	                new CustomResponseDTO("Error in exporting Excel data", HttpStatus.BAD_REQUEST.value()),
+	                new Response("Error in exporting Excel data", HttpStatus.BAD_REQUEST.value()),
 	                HttpStatus.BAD_REQUEST);
 	    }
 	}

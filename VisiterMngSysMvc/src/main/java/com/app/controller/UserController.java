@@ -56,21 +56,18 @@ public class UserController {
 	@Value("${project.excel}")
 	private String excelDir;
 
-//	@PostMapping("/adduser1")
-//	public ResponseEntity<?> addUser1(@RequestBody @Valid UserDto userDto,HttpServletRequest request, HttpServletResponse response) {
-//		
-//		
-//		Response<?> checkUser = vallidationClass.checkUser(userDto);
-//		if (checkUser.getStatus() == HttpStatus.OK.value()) {
-//			Response<?> saveUser = userService.saveUser(userDto);
-//
-//			return new ResponseEntity<Response>(saveUser, HttpStatus.OK);
-//		} else {
-//			return new ResponseEntity<Response>(checkUser, HttpStatus.BAD_REQUEST);
-//		}
-//		
-//
-//	}
+	@PostMapping("/adduser1")
+	public ResponseEntity<?> addUser1(@RequestBody @Valid UserDto userDto,HttpServletRequest request, HttpServletResponse response) {
+		
+		
+		//Response<?> checkUser = vallidationClass.checkUser(userDto);
+			Response<?> saveUser = userService.saveUser(userDto);
+
+			return new ResponseEntity<Response>(saveUser, HttpStatus.OK);
+		
+		
+
+	}
 
 //	@PostMapping("/adduser")
 //	public ResponseEntity<?> addUser(@RequestBody @Valid UserDto userDto,HttpServletRequest request, HttpServletResponse response) {
